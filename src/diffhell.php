@@ -1,21 +1,63 @@
 <?php
-const MIN_RAND = 1000;
-const MAX_RAND = 10000;
-//https://de.wikipedia.org/wiki/Diffie-Hellman-Schlüsselaustausch
+/**
+ * Class for Diffie-Hellman Key Exchange
+ *
+ * @see https://de.wikipedia.org/wiki/Diffie-Hellman-Schlüsselaustausch
+ */
+class DiffieHellman
+{
+  const MIN_RAND = 1000;
+  const MAX_RAND = 10000;
 
-//Mersenne-Primzahl 15 	1279 	386 	1952 	Robinson
-$p = bcpow('2', '1279');
-$p = bcsub($p,1);
-$g = bcpow('2', '111');
+  protected $p;
+  protected $g;
+  protected $a;
+  protected $A;
 
-//random key
-$a = rand(MIN_RAND,MAX_RAND);
-$A = bcmod(bcpow($g,$a),$p);
+  //exchange key
+  protected $B;
 
-echo "a: ".$a."\n";
-echo "g: ".$g."\n";
-echo "p: ".$p."\n";
-echo "A: ".$A."\n";
-$B = readline("B:");
-$K = bcmod(bcpow($B,$a),$p);
-echo "K: ".$K."\n";
+  //result key
+  protected $K;
+
+  function __construct()
+  {
+    $this->init();
+  }
+
+  protected function init()
+  {
+    //Mersenne-Primzahl 15 	1279 	386 	1952 	Robinson
+    $this->p = bcpow('2', '1279');
+    $this->p = bcsub($this->p,1);
+
+    $this->g = bcpow('2', '111');
+
+    //random key
+    $this->a = rand(self::MIN_RAND,self::MAX_RAND);
+    $this->A = bcmod(bcpow($this->g,$this->a),$this->p);
+  }
+
+  public function exchange($B)
+  {
+    $this->B = $B;
+    $this->K = bcmod(bcpow($this->B,$this->a),$this->p);
+  }
+
+  public function toString()
+  {
+    $return  = "a: ".$this->a."\n";
+    $return .= "g: ".$this->g."\n";
+    $return .= "p: ".$this->p."\n";
+    $return .= "A: ".$this->A."\n";
+    $return .= "B: ".$this->B."\n";
+    $return .= "K: ".$this->K;
+
+    return $return;
+  }
+
+  public function getA()
+  {
+    return $this->A;
+  }
+}
