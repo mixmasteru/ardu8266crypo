@@ -40,7 +40,7 @@ class DiffieHellman
 
   public function exchange($B)
   {
-    $this->B = $B;
+    $this->B = trim($B);
     $this->K = bcmod(bcpow($this->B,$this->a),$this->p);
   }
 
