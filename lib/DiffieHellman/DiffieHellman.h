@@ -13,16 +13,17 @@ class DiffieHellman
     BigNumber exchange(BigNumber A);
     BigNumber exchange(String strA);
     BigNumber getB();
+    BigNumber getK();
     String toString();
   private:
     void init();
     BigNumber parseString(String in);
-    int _b;
-    BigNumber _p;
-    BigNumber _g;
-    BigNumber _A;
+    BigNumber b;
+    BigNumber p;
+    BigNumber g;
+    BigNumber A;
     BigNumber B;
-    BigNumber _K;
+    BigNumber K;
 };
 
 #endif
