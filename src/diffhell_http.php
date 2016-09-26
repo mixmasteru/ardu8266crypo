@@ -12,5 +12,5 @@ if(!empty($_GET["B"]))
   error_log(ob_get_clean(), 4);
 
   header('Content-Type: text/plain');
-  echo $dh->getA();
+  echo $dh->getA().PHP_EOL;
 }

@@ -1,14 +1,13 @@
-#ifndef UNIT_TEST
-
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <DiffieHellman.h>
 
+MDNSResponder mdns;
+
 const char* ssid     = "WLAN";
 const char* password = "PWD";
-MDNSResponder mdns;
 
 IPAddress host(172,23,1,112);
 const int httpPort = 8080;
@@ -33,15 +32,14 @@ void handleDH(){
 
   if (client.connect(host, httpPort)) {
 
-    //DiffieHellman dh;
+    DiffieHellman dh;
     // We now create a URI for the request
-    //char * s = dh.getB().toString();
-    //String msgString(s);
-    //free (s);
+    char * s = dh.getB().toString();
+    String msgString(s);
 
     String url = "/?B=";
-    url += "123456";
-
+    url += s;
+    free (s);
 
     Serial.print("Requesting URL: ");
     Serial.println(url);
@@ -69,10 +67,18 @@ void handleDH(){
 
     Serial.println();
     Serial.println("closing connection");
-    Serial.println(lines);
-
     server.send(200, "text/plain", "done");
 
+    Serial.print("A:");
+    Serial.println(lines);
+    Serial.println("exchange...");
+
+    //dh.exchange(lines);
+
+    //Serial.print("K:");
+    //char * k = dh.getK().toString ();
+    //Serial.println (k);
+    //free (k);
   }
   else{
     Serial.println("connection failed");
@@ -136,5 +142,3 @@ void setup(void){
 void loop(void){
   server.handleClient();
 }
-
-#endif
