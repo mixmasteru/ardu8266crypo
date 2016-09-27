@@ -69,10 +69,14 @@ void handleDH(){
     Serial.println("closing connection");
     server.send(200, "text/plain", "done");
 
-    Serial.print("A:");
     Serial.println(lines);
-    Serial.println("exchange...");
 
+    Serial.print("A:");
+    String body = lines.substring(lines.indexOf("\n\n")+2);
+    body.trim();
+    Serial.println(body);
+
+    Serial.println("exchange...");
     //dh.exchange(lines);
 
     //Serial.print("K:");
